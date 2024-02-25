@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 function App() {
@@ -9,12 +8,6 @@ function App() {
       .then((response) => response.json())
       .then((data) => setCountries(data))
       .catch((error) => console.error("Error fetching data: ", error));
-    // try{
-    //   let res = axios.get("https://restcountries.com/v3.1/all");
-    //   setCountries(res.data)
-    // }catch(err){
-    //   console.log(err)
-    // }
   }, []);
 
   const cardStyle = {
