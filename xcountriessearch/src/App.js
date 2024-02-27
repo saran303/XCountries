@@ -31,7 +31,7 @@ function App() {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
-    alignItems: "start",
+    alignItems: "center",
     height: "100vh"
   };
 
