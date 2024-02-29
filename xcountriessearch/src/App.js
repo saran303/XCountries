@@ -1,81 +1,68 @@
-import React, { useEffect, useState } from "react";
+import "./App.css";
+import { useState } from "react";
+import { useEffect } from "react";
 
-function App() {
-  const [countries, setCountries] = useState([]);
-  const [searchInput, setSearchInput] = useState("");
+export default function App() {
+  const [country, setCountry] = useState([]);
+  const [input, setInput] = useState("");
+  const [filtedata, setfilterData] = useState([]);
 
   useEffect(() => {
-    fetch("https://restcountries.com/v3.1/all")
-      .then((response) => response.json())
-      .then((data) => setCountries(data))
-      .catch((error) => console.error("Error fetching data: ", error));
+    data();
   }, []);
-
-  const filteredCountries = countries.filter((country) =>
-    country.name.common.toLowerCase().includes(searchInput.toLowerCase())
-  );
-
-  const cardStyle = {
-    width: "200px",
-    border: "1px solid #ccc",
-    borderRadius: "10px",
-    margin: "10px",
-    padding: "10px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center"
-  };
-
-  const containerStyle = {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100vh"
-  };
-
-  const imageStyle = {
-    width: "100px",
-    height: "100px"
-  };
-  const searchBar ={
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: "10px"
+  function data() {
+    fetch("https://restcountries.com/v3.1/all")
+      .then((res) => res.json())
+      .then((data1) => {
+        setCountry(data1);
+        setfilterData(data1);
+      })
+      .catch((error) => console.error("Error fetchind data:", error));
   }
-  const searchInt = {
-    width: "50%",
-    padding: "10px",
-  }
+
+  let find = () => {
+    let data = country.filter((country) => {
+      let val = country.name.common.toLowerCase();
+      if (val.includes(input.toLowerCase())) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    setfilterData(data);
+  };
+
+  useEffect(() => {
+    find();
+  }, [input]);
 
   return (
     <div>
-      <div style={searchBar}>
+      <div className="search">
         <input
-            type="text"
-            placeholder="Search for Countries"
-            onChange={(e) => setSearchInput(e.target.value)}
-            value={searchInput}
-            style={searchInt}
-             />
+          onChange={(e) => {
+            let val = e.target.value;
+            setInput(val);
+          }}
+          placeholder="Search for countries"
+          className="searchinput"
+          type="text"
+        />
       </div>
-      <div style={containerStyle}>
-        {filteredCountries.map((country) => (
-          <div key={country.cca3} style={cardStyle}>
+
+      <div className="fullCon">
+        {filtedata.map((country) => (
+          <div className="countryCard" key={country.car.ccn3}>
             <img
+              className="imageConatiner"
               src={country.flags.png}
-              alt={`Flag of ${country.name.common}`}
-              style={imageStyle}
+              alt={country.flags.alt}
             />
-            <h2>{country.name.common}</h2>
+            <div className="text">{country.name.common}</div>
           </div>
         ))}
       </div>
     </div>
   );
 }
-
-export default App;
